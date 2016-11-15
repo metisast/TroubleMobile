@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.icu.util.TimeUnit;
@@ -13,12 +14,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TimePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -37,6 +41,7 @@ public class MyService extends Service{
 
     private String roomTitle = "";
     private String id = "0";
+    Intent intent;
 
     /* Check to connect */
     private Socket socket;
@@ -73,8 +78,10 @@ public class MyService extends Service{
 
                 createNotification(roomTitle, Integer.valueOf(id));
 
-                //GetTasksAsync async = new GetTasksAsync(SERVICE_URL, , MainActivity.class);
-                //async.execute();
+                intent = new Intent(MyService.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -114,7 +121,7 @@ public class MyService extends Service{
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(LOG_TAG, "onBild");
+        Log.d(LOG_TAG, "onBuild");
         return null;
     }
 }
