@@ -1,5 +1,6 @@
 package com.example.eugene.myapplication;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TimePicker;
 
 import org.json.JSONException;
@@ -29,6 +31,7 @@ import io.socket.emitter.Emitter;
 public class MyService extends Service{
 
     final String LOG_TAG = "myLogs";
+    final String SERVICE_URL = "http://89.219.23.94:14601/api/task";
 
     private NotificationManager notificationManager;
 
@@ -70,6 +73,8 @@ public class MyService extends Service{
 
                 createNotification(roomTitle, Integer.valueOf(id));
 
+                //GetTasksAsync async = new GetTasksAsync(SERVICE_URL, , MainActivity.class);
+                //async.execute();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

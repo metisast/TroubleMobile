@@ -13,7 +13,6 @@ import android.widget.Toast;
 public class MyBroadReceiv extends BroadcastReceiver {
 
     final String LOG_TAG = "myLogs";
-    private final String BOOT_ACTION = "android.intent.action.BOOT_COMPLETED";
 
     @Override
     public void onReceive(Context context, Intent intent) {
