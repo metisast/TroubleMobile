@@ -49,7 +49,7 @@ public class MyService extends Service{
         super.onCreate();
         Log.d(LOG_TAG, "onCreate");
 
-        socket.on("task:show", ShowText);
+        socket.on("task:show", ShowTasks);
         socket.connect();
     }
 
@@ -59,7 +59,7 @@ public class MyService extends Service{
         return super.onStartCommand(intent, flag, startId);
     }
 
-    private Emitter.Listener ShowText = new Emitter.Listener() {
+    private Emitter.Listener ShowTasks = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             JSONObject jsonObject = (JSONObject) args[0];

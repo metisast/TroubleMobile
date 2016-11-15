@@ -30,10 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String LOG_TAG = "myLogs";
     private static final int CM_DELETE_ID = 1;
 
-    Button btnStart;
-    Button btnStop;
-    Button btnChecked;
-
     ArrayList<Map<String, Object>> contactList;
     SimpleAdapter sAdapter;
 
@@ -108,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Couldn't get json from server. Check LogCat for possible errors!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Couldn't get json from server. Check LogCat for possible errors!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -125,11 +121,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     new String[]{"room_name", "created_at"}, new int[]{R.id.room_name, R.id.created_at});
             lvMain.setAdapter(sAdapter);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -155,5 +146,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        new GetContacts().execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

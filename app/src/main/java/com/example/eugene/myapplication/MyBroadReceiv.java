@@ -19,7 +19,7 @@ public class MyBroadReceiv extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(LOG_TAG, "onReceive " + intent.getAction());
 
-        Toast toast = Toast.makeText(context.getApplicationContext(), "Broadcast", Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context.getApplicationContext(), "Broadcast", Toast.LENGTH_SHORT);
         toast.show();
 
         context.startService(new Intent(context, MyService.class));
