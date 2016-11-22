@@ -3,14 +3,20 @@ package com.example.eugene.myapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, GetTasksAsync.ListCallback{
@@ -42,9 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Преобразуем JSON и создаем список
         GetTasksAsync async = new GetTasksAsync(SERVICE_URL, this);
         async.execute();
-    }
-
-    public void test(){
 
     }
 
@@ -58,15 +61,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         menu.add(0, CM_DELETE_ID, 0, "Задача выполнена");
     }
 
+    /* Функционал контексного меню */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        // Удаляем список
         if(item.getItemId() == CM_DELETE_ID){
             // получаем инфу о пункте списка
             AdapterView.AdapterContextMenuInfo acmi= (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+            /* Получаем идентификатор выбранного пункта (Кастыль ужасный) */
+            String obj = sAdapter.getItem(acmi.position).toString();
+            String str = obj.substring(1, obj.length()-1);
+            String[] strArr = str.split(", ");
+            String[] id = strArr[strArr.length-1].split("=");
+            Log.d(LOG_TAG, id[1]);
+
+            /* Отправляем данные на серер, что задача выполнена */
+            PostTaskAsync postAsync = new PostTaskAsync(SERVICE_URL, id[1]);
+            postAsync.execute();
+
             // удаляем Map из коллекции, используя позицию пункта в списке
             tasksList.remove(acmi.position);
             // уведомляем, что данные изменились
             sAdapter.notifyDataSetChanged();
+
             return true;
         }
 
@@ -89,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
     }
 
-    /* Выполнение таска */
+    /* Выполнение таска и рендер списка */
     @Override
     public void createListAdapter(ArrayList<Map<String, Object>> lists) {
         /* Передаем новый лист в Activity */

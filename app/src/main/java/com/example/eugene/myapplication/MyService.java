@@ -13,16 +13,12 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TimePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Map;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -58,6 +54,7 @@ public class MyService extends Service{
         Log.d(LOG_TAG, "onCreate");
 
         socket.on("task:show", ShowTasks);
+        socket.on("task:delete", DeleteTasks);
         socket.connect();
     }
 
@@ -85,6 +82,15 @@ public class MyService extends Service{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    };
+
+    private Emitter.Listener DeleteTasks = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            intent = new Intent(MyService.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     };
 
@@ -124,4 +130,5 @@ public class MyService extends Service{
         Log.d(LOG_TAG, "onBuild");
         return null;
     }
+
 }

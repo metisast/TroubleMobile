@@ -1,12 +1,15 @@
 package com.example.eugene.myapplication;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -18,8 +21,9 @@ import java.net.URL;
 
 public class HttpHandler {
 
-    private static final String TAG = HttpHandler.class.getSimpleName();
+    private static final String TAG = "myLogs";
 
+    /* Метод который выгружает все активные задачи */
     public String makeServiceCall(String service_url) throws IOException {
 
         String response = null;
@@ -42,6 +46,7 @@ public class HttpHandler {
         return response;
     }
 
+    /* Приобразуем поток в строку */
     private String convertStreamToString(InputStream in) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder sb = new StringBuilder();
@@ -63,5 +68,4 @@ public class HttpHandler {
 
         return sb.toString();
     }
-
 }
